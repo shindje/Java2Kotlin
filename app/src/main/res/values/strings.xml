@@ -2,4 +2,6 @@
     <string name="app_name" translatable="false">Java2Kotlin</string>
     <string name="button">Show toast</string>
     <string name="hello">Hello</string>
+    <string name="title">Title</string>
+    <string name="defaultNoteTitle">New Note</string>
 </resources>

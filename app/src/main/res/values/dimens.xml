@@ -2,4 +2,5 @@
 <resources>
     <dimen name="layout_margin">4dp</dimen>
     <dimen name="layout_margin_side">8dp</dimen>
+    <dimen name="note_layout_padding">16dp</dimen>
 </resources>
