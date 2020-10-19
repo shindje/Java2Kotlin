@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.java2kotlin.R
+import com.example.java2kotlin.data.entity.Color
 import com.example.java2kotlin.data.entity.Note
 import kotlinx.android.synthetic.main.item_note.view.*
 
-class MainRVAdapter : RecyclerView.Adapter<MainRVAdapter.NoteViewHolder>() {
+class MainRVAdapter (private val onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<MainRVAdapter.NoteViewHolder>() {
     var notes: List<Note> = listOf()
         set(value) {
             field = value
@@ -28,12 +29,26 @@ class MainRVAdapter : RecyclerView.Adapter<MainRVAdapter.NoteViewHolder>() {
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) = holder.bind(notes[position])
 
-    class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(note: Note) = with(itemView) {
             titleTextView.text = note.title
             textTextView.text = note.text
-            setBackgroundColor(note.color)
+            var color = when(note.color) {
+                Color.WHITE -> R.color.colorWHITE
+                Color.VIOLET -> R.color.colorVIOLET
+                Color.YELLOW -> R.color.colorYELLOW
+                Color.RED -> R.color.colorRED
+                Color.PINK -> R.color.colorPINK
+                Color.GREEN -> R.color.colorGREEN
+                Color.BLUE -> R.color.colorBLUE
+            }
+            setBackgroundColor(context.resources.getColor(color, null))
+            setOnClickListener {
+                onItemClickListener.onItemClick(note)}
         }
     }
 
+    interface OnItemClickListener {
+        fun onItemClick(note: Note)
+    }
 }
