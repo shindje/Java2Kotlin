@@ -4,4 +4,5 @@
     <string name="hello">Hello</string>
     <string name="title">Title</string>
     <string name="defaultNoteTitle">New Note</string>
+    <string name="ok" translatable="false">OK</string>
 </resources>

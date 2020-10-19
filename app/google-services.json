@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "43383896427",
+    "firebase_url": "https://java2kotlin-dda83.firebaseio.com",
+    "project_id": "java2kotlin-dda83",
+    "storage_bucket": "java2kotlin-dda83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43383896427:android:7e61f7f7f63badd85ab42e",
+        "android_client_info": {
+          "package_name": "com.example.java2kotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "43383896427-m5fl0p9ghns0lg0ghq69arfm3m3lqsd0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVzOUiZci9qfzMHxyiCCKj7vqWSlLzliw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "43383896427-m5fl0p9ghns0lg0ghq69arfm3m3lqsd0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
