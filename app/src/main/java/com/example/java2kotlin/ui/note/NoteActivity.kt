@@ -12,23 +12,26 @@ import com.example.java2kotlin.R
 import com.example.java2kotlin.data.entity.Color
 import com.example.java2kotlin.data.entity.Note
 import com.example.java2kotlin.ext.DATE_TIME_FORMAT
+import com.example.java2kotlin.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteActivity: AppCompatActivity() {
+class NoteActivity: BaseActivity<Note?, NoteViewState>() {
     companion object {
-        private val EXTRA_NOTE = "note"
+        private val EXTRA_NOTE = "noteId"
 
-        fun getStartIntent(context: Context, note: Note?): Intent {
+        fun getStartIntent(context: Context, noteId: String?): Intent {
             val intent = Intent(context, NoteActivity::class.java)
-            intent.putExtra(EXTRA_NOTE, note)
+            intent.putExtra(EXTRA_NOTE, noteId)
             return intent
         }
     }
 
     private var note: Note? = null
-    private lateinit var viewModel: NoteViewModel
+    override val viewModel: NoteViewModel by lazy { ViewModelProvider(this).get(NoteViewModel::class.java) }
+    override val layoutResId = R.layout.activity_note
+
     private val textChangeListener = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         }
@@ -57,20 +60,21 @@ class NoteActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_note)
-        note = intent.getParcelableExtra(EXTRA_NOTE)
+        val noteId = intent.getStringExtra(EXTRA_NOTE)
+        noteId?.let { viewModel.loadNote(noteId) }
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title =
-                if (note == null)
-                    getString(R.string.defaultNoteTitle)
-                else
-                    SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(note!!.lastChangeDate)
+        if (noteId == null) {
+            supportActionBar?.title = getString(R.string.defaultNoteTitle)
+            titleEditText.addTextChangedListener(textChangeListener)
+            textEditText.addTextChangedListener(textChangeListener)
+        }
+    }
 
+    override fun renderData(data: Note?) {
+        this.note = data
         initView()
-
-        viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
     }
 
     private fun initView() {
