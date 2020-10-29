@@ -15,7 +15,6 @@ import com.example.java2kotlin.ext.format
 import com.example.java2kotlin.ext.getColorInt
 import com.example.java2kotlin.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -78,6 +77,8 @@ class NoteActivity: BaseActivity<NoteViewState.Data, NoteViewState>() {
             setToolbarColor(it)
             triggerSaveNote()
         }
+
+        initView()
     }
 
     override fun renderData(data: NoteViewState.Data) {
@@ -85,20 +86,21 @@ class NoteActivity: BaseActivity<NoteViewState.Data, NoteViewState>() {
             finish()
 
         this.note = data.note
+        data.note?.let { color = it.color }
         initView()
     }
 
     private fun initView() {
+        removeEditListener()
         note?.run {
             supportActionBar?.title = lastChangeDate.format()
 
-            removeEditListener()
             titleEditText.setText(title)
             textEditText.setText(text)
-            setEditListener()
 
             setToolbarColor(color)
         }
+        setEditListener()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean = menuInflater.inflate(R.menu.note_menu, menu).let { true }
@@ -113,7 +115,8 @@ class NoteActivity: BaseActivity<NoteViewState.Data, NoteViewState>() {
 
     private fun createNote(): Note = Note(UUID.randomUUID().toString(),
                                           titleEditText.text.toString(),
-                                          textEditText.text.toString())
+                                          textEditText.text.toString(),
+                                          color)
 
     private fun deleteNote() {
         AlertDialog.Builder(this)
