@@ -4,4 +4,6 @@
     <string name="hello">Привет</string>
     <string name="title">Заголовок</string>
     <string name="defaultNoteTitle">Новая заметка</string>
+    <string name="logout">Выйти</string>
+    <string name="cancel">Отмена</string>
 </resources>
