@@ -1,17 +1,18 @@
 package com.example.java2kotlin.ui.splash
 
 import android.os.Handler
-import androidx.lifecycle.ViewModelProvider
 import com.example.java2kotlin.ui.base.BaseActivity
 import com.example.java2kotlin.ui.main.MainActivity
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
-    override val viewModel: SplashViewModel by lazy { ViewModelProvider(this).get(SplashViewModel::class.java) }
+    override val model: SplashViewModel by viewModel()
     override val layoutResId: Int? = null
 
     override fun onResume() {
         super.onResume()
-        Handler(getMainLooper()).postDelayed({viewModel.requestUser()}, 1000L)
+        Handler(getMainLooper()).postDelayed({model.requestUser()}, 1000L)
     }
 
     override fun renderData(data: Boolean?) {

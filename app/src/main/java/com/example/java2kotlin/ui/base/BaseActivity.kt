@@ -14,13 +14,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 private const val RC_SIGN_IN = 123
 
 abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
-    abstract val viewModel: BaseViewModel<T, S>
+    abstract val model: BaseViewModel<T, S>
     abstract val layoutResId: Int?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         layoutResId?.let{setContentView(it)}
-        viewModel.getViewState().observe(this, Observer<S> {t ->
+        model.getViewState().observe(this, Observer<S> { t ->
             t?.apply {
                 data?.let { renderData(it) }
                 error?.let { renderError(it) }

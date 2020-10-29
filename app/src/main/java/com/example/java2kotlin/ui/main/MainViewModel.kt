@@ -6,7 +6,7 @@ import com.example.java2kotlin.data.entity.Note
 import com.example.java2kotlin.model.NoteResult
 import com.example.java2kotlin.ui.base.BaseViewModel
 
-class MainViewModel(val repository: NotesRepository = NotesRepository) : BaseViewModel<List<Note>?, MainViewState>() {
+class MainViewModel(val repository: NotesRepository) : BaseViewModel<List<Note>?, MainViewState>() {
     private val notesObserver = object : Observer<NoteResult> {
         override fun onChanged(t: NoteResult?) {
             if (t == null)

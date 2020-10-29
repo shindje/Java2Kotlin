@@ -4,26 +4,44 @@ import com.example.java2kotlin.data.NotesRepository
 import com.example.java2kotlin.data.entity.Note
 import com.example.java2kotlin.model.NoteResult
 import com.example.java2kotlin.ui.base.BaseViewModel
+import java.lang.Error
 
-class NoteViewModel (private val repository: NotesRepository = NotesRepository): BaseViewModel<Note?, NoteViewState>() {
+class NoteViewModel (private val repository: NotesRepository): BaseViewModel<NoteViewState.Data, NoteViewState>() {
     private var pendingNote: Note? = null
+    private val currentNote: Note?
+        get() = viewStateLiveData.value?.data?.note
 
     fun save(note: Note) {
-        pendingNote = note
+        viewStateLiveData.value = NoteViewState(NoteViewState.Data(note = note))
     }
 
     override fun onCleared() {
-        if (pendingNote != null)
-            repository.saveNote(pendingNote!!)
+        currentNote?.let {
+            repository.saveNote(it)
+        }
     }
 
     fun loadNote(noteId: String) {
         repository.getNoteById(noteId).observeForever {
-            if (it == null)
-                return@observeForever
-            when(it) {
-                is NoteResult.Success<*> -> viewStateLiveData.value = NoteViewState(note = it.data as? Note)
-                is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = it.error)
+            it?.let {
+                viewStateLiveData.value =
+                        when (it) {
+                            is NoteResult.Success<*> -> NoteViewState(NoteViewState.Data(note = it.data as? Note))
+                            is NoteResult.Error -> NoteViewState(error = it.error)
+                        }
+            }
+        }
+    }
+
+    fun deleteNote() {
+        currentNote?.let {
+            repository.deleteNote(it.id).observeForever { t ->
+                t?.let {
+                    viewStateLiveData.value = when (it) {
+                        is NoteResult.Success<*> -> NoteViewState(NoteViewState.Data(isDeleted = true))
+                        is NoteResult.Error -> NoteViewState(error = it.error)
+                    }
+                }
             }
         }
     }
