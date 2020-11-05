@@ -6,4 +6,7 @@
     <string name="defaultNoteTitle">Новая заметка</string>
     <string name="logout">Выйти</string>
     <string name="cancel">Отмена</string>
+    <string name="change_color_menu_title">Выбор цвета</string>
+    <string name="delete_menu_title">Удалить</string>
+    <string name="delete_dialog_message">Удалить заметку?</string>
 </resources>

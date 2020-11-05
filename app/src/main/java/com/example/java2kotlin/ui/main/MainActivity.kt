@@ -17,6 +17,8 @@ import com.example.java2kotlin.ui.note.NoteActivity
 import com.example.java2kotlin.ui.splash.SplashActivity
 import com.firebase.ui.auth.AuthUI
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
 
@@ -24,7 +26,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
         fun getStartIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
 
-    override val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+    override val model: MainViewModel by viewModel()
     override val layoutResId: Int = R.layout.activity_main
     lateinit var adapter: MainRVAdapter
 

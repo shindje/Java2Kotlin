@@ -3,10 +3,14 @@ package com.example.java2kotlin.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.java2kotlin.R
 import com.example.java2kotlin.data.entity.Color
 import com.example.java2kotlin.data.entity.Note
+import com.example.java2kotlin.ext.getColorInt
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_note.*
 import kotlinx.android.synthetic.main.item_note.view.*
 
 class MainRVAdapter (private val onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<MainRVAdapter.NoteViewHolder>() {
@@ -29,22 +33,14 @@ class MainRVAdapter (private val onItemClickListener: OnItemClickListener) : Rec
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) = holder.bind(notes[position])
 
-    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(note: Note) = with(itemView) {
+    inner class NoteViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+        fun bind(note: Note) {
             titleTextView.text = note.title
             textTextView.text = note.text
-            var color = when(note.color) {
-                Color.WHITE -> R.color.colorWHITE
-                Color.VIOLET -> R.color.colorVIOLET
-                Color.YELLOW -> R.color.colorYELLOW
-                Color.RED -> R.color.colorRED
-                Color.PINK -> R.color.colorPINK
-                Color.GREEN -> R.color.colorGREEN
-                Color.BLUE -> R.color.colorBLUE
+            itemView.setBackgroundColor(note.color.getColorInt(itemView.context))
+            itemView.setOnClickListener {
+                onItemClickListener.onItemClick(note)
             }
-            setBackgroundColor(context.resources.getColor(color, null))
-            setOnClickListener {
-                onItemClickListener.onItemClick(note)}
         }
     }
 
