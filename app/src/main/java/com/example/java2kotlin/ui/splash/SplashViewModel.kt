@@ -6,7 +6,7 @@ import com.example.java2kotlin.ui.base.BaseViewModel
 
 class SplashViewModel(private val repository: NotesRepository): BaseViewModel<Boolean?, SplashViewState>() {
     fun requestUser() {
-        repository.getCuurentUser().observeForever() {
+        repository.getCurrentUser().observeForever() {
             viewStateLiveData.value = it?.let {
                 SplashViewState(isAuth = true)
             } ?: SplashViewState(error = NoAuthException())

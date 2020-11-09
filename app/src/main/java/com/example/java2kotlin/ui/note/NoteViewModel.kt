@@ -1,13 +1,12 @@
 package com.example.java2kotlin.ui.note
 
+import androidx.annotation.VisibleForTesting
 import com.example.java2kotlin.data.NotesRepository
 import com.example.java2kotlin.data.entity.Note
 import com.example.java2kotlin.model.NoteResult
 import com.example.java2kotlin.ui.base.BaseViewModel
-import java.lang.Error
 
 class NoteViewModel (private val repository: NotesRepository): BaseViewModel<NoteViewState.Data, NoteViewState>() {
-    private var pendingNote: Note? = null
     private val currentNote: Note?
         get() = viewStateLiveData.value?.data?.note
 
@@ -15,7 +14,8 @@ class NoteViewModel (private val repository: NotesRepository): BaseViewModel<Not
         viewStateLiveData.value = NoteViewState(NoteViewState.Data(note = note))
     }
 
-    override fun onCleared() {
+    @VisibleForTesting
+    public override fun onCleared() {
         currentNote?.let {
             repository.saveNote(it)
         }

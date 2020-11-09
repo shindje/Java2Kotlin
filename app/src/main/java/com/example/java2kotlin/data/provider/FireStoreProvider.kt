@@ -15,9 +15,8 @@ private const val USERS = "users"
 
 class FireStoreProvider(private val firebaseAuth: FirebaseAuth, private val db: FirebaseFirestore): RemoteDataProvider {
     private val TAG = "${FireStoreProvider::class.java.simpleName} :"
-    private val notes = db.collection(NOTES)
     private val currentUser
-        get() = FirebaseAuth.getInstance().currentUser
+        get() = firebaseAuth.currentUser
 
     private fun getUserNotes() = currentUser?.let { db.collection(USERS).document(it.uid).collection(NOTES) }
             ?: throw NoAuthException()
@@ -75,11 +74,15 @@ class FireStoreProvider(private val firebaseAuth: FirebaseAuth, private val db: 
 
     override fun deleteNote(noteId: String): LiveData<NoteResult> =
             MutableLiveData<NoteResult>().apply {
-                getUserNotes().document(noteId).delete()
-                        .addOnSuccessListener {
-                            value = NoteResult.Success(null)
-                        }.addOnFailureListener {
-                            value = NoteResult.Error(it)
-                        }
+                try {
+                    getUserNotes().document(noteId).delete()
+                            .addOnSuccessListener {
+                                value = NoteResult.Success(null)
+                            }.addOnFailureListener {
+                                value = NoteResult.Error(it)
+                            }
+                } catch (e: Throwable) {
+                    value = NoteResult.Error(e)
+                }
             }
 }
