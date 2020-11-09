@@ -6,7 +6,7 @@ import com.example.java2kotlin.ui.main.MainActivity
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
+class SplashActivity : BaseActivity<Boolean>() {
     override val model: SplashViewModel by viewModel()
     override val layoutResId: Int? = null
 
@@ -15,7 +15,7 @@ class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
         Handler(getMainLooper()).postDelayed({model.requestUser()}, 1000L)
     }
 
-    override fun renderData(data: Boolean?) {
+    override fun renderData(data: Boolean) {
         data?.takeIf { it }?.let { startMainActivity() }
     }
 

@@ -15,10 +15,12 @@ import com.example.java2kotlin.ext.format
 import com.example.java2kotlin.ext.getColorInt
 import com.example.java2kotlin.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
-class NoteActivity: BaseActivity<NoteViewState.Data, NoteViewState>() {
+class NoteActivity: BaseActivity<NoteViewState.Data>() {
     companion object {
         private val EXTRA_NOTE = "noteId"
 
@@ -50,14 +52,17 @@ class NoteActivity: BaseActivity<NoteViewState.Data, NoteViewState>() {
     private fun triggerSaveNote() {
         if (titleEditText.text == null || titleEditText.text!!.length < 3) return
 
-        note = note?.copy(title = titleEditText.text.toString(),
-                          text = textEditText.text.toString(),
-                          lastChangeDate = Date(),
-                          color = color)
-                   ?: createNote()
+        launch {
+            delay(1000)
+            note = note?.copy(title = titleEditText.text.toString(),
+                    text = textEditText.text.toString(),
+                    lastChangeDate = Date(),
+                    color = color)
+                    ?: createNote()
 
-        if (note != null)
-            model.save(note!!)
+            if (note != null)
+                model.save(note!!)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
